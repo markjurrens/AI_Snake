@@ -34,8 +34,9 @@ bool ateFood = false;
 // Flag to track if the game is over
 bool gameOver = false;
 
-// Counter for food pellets eaten
+// Counters for food pellets eaten and high score
 int foodEaten = 0;
+int highScore = 0;
 
 // Define current movement direction of the snake
 int direction = 1; // 0: UP, 1: RIGHT, 2: DOWN, 3: LEFT
@@ -70,17 +71,22 @@ void loop() {
       // Draw the food
       u8g.setColorIndex(1); // White color for food
       u8g.drawBox(foodX * objectSize, foodY * objectSize, objectSize, objectSize);
-      // Draw the food counter
-      u8g.setFont(u8g_font_helvB08); // Set font size
-      u8g.setColorIndex(1); // White color for text
-      char counterText[20];
-      sprintf(counterText, "Food Eaten: %d", foodEaten);
-      int textWidth = u8g.getStrWidth(counterText);
-      int xPos = (screenWidth - textWidth) / 2;
-      int yPos = screenHeight - 10;
-      u8g.drawStr(xPos, yPos, counterText); // Draw the text
-      // Move the snake
-      moveSnake();
+
+// Draw the food and high score counters
+//NOTE: If the Arduino Board looses power or the reset buton is depressed, the high score counter will reset. The high score is nor stored to non volitile memory aka EEPROM.
+u8g.setFont(u8g_font_helvB08); // Set font size
+u8g.setColorIndex(1); // White color for text
+char counterText[20];
+sprintf(counterText, "High Score: %d", highScore);
+int textWidth = u8g.getStrWidth(counterText);
+int xPos = (screenWidth - textWidth) / 2 - 300; // Adjusted to center the text elements and move them left
+int yPos = screenHeight - 10; // Adjusted yPos to move the counters further down
+u8g.drawStr(xPos, yPos, counterText); // Draw the text
+sprintf(counterText, "Food Eaten: %d", foodEaten);
+textWidth = u8g.getStrWidth(counterText);
+xPos = (screenWidth - textWidth) / 2 + 40; // Adjusted to center the text elements
+u8g.drawStr(xPos, yPos, counterText); // Draw the text      // Move the snake
+moveSnake();
     } while (u8g.nextPage());
   } else {
     // Game over, display message
@@ -101,6 +107,9 @@ void loop() {
     snake[0].y = 3;
     placeFood();
     gameOver = false;
+    if (foodEaten > highScore) {
+      highScore = foodEaten; // Update high score if necessary
+    }
     foodEaten = 0; // Reset food eaten counter
   }
 }
