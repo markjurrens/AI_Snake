@@ -4,7 +4,7 @@ This code was developed with ChatGPT, but you will need a couple items of hardwa
 
 First, you will need an Arduino Mega 2560 board.
 
-Second, you will need an RAT6963 or T6963c compatible 240x128 Graphic LCD.
+Second, you will need an RA6963 or T6963c compatible 240x128 Graphic LCD.
 
 To interconnect the devices you will need the pinout suggested by this website to successfully build the 20 pin interface to marry the hardware devices together: https://www.instructables.com/Arduino-With-T6963c-240x128-Graphic-LCD/
 
